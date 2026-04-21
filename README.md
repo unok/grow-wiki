@@ -143,6 +143,7 @@ bash ~/.claude/skills/grow-wiki/scripts/list-pages.sh
 | L3 | index.md 完全性 | — | 欠落 or 余剰あり |
 | L4 | index.md 鮮度・リンク妥当性 | 古い | リンクテキスト不一致 |
 | L5 | subfolder-exclusivity（サブフォルダがあれば直下にページを置かない） | — | 直下にページあり |
+| L6 | citation-required（entity/concept に出典、source-url に source_url） | 出典なし | — |
 
 閾値の変更は `.skill/references/lint-rules.md` と `.skill/scripts/lint.sh` を同じ値に揃えます。
 

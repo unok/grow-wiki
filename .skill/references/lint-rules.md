@@ -10,7 +10,8 @@
 | L2 | file-length | 各ページの行数／文字数 | 300 行 OR 8000 文字超 | 500 行 OR 15000 文字超 |
 | L3 | index-completeness | フォルダ直下の全 .md が同フォルダの index.md 内に `[[wikilink]]` でリストされている | — | 欠落 or 余剰があれば |
 | L4 | index-freshness | index.md の `last_updated` より新しいページが存在する／index.md 内のリンクテキストが現ページ title/aliases と不一致 | 鮮度（古い） | リンク不一致 |
-| L5 | subfolder-exclusivity | サブフォルダが 1 つでも存在するディレクトリの直下には、index.md（と root の overview/log/README）以外のページを置いてはいけない | — | 直下にページがあれば |
+| L5 | subfolder-exclusivity | サブフォルダが 1 つでも存在するディレクトリの直下には、index.md（と root の overview/log/README）以外のページを置いてはいけない | — | 直下にページあり |
+| L6 | citation-required | entity / concept は `## 出典` セクションに `[[source ページ]]` または外部 URL を 1 つ以上記載。source-url は frontmatter の `source_url` が必須 | 出典なし | — |
 
 ## L1: folder-size
 
@@ -142,6 +143,35 @@ L5 subfolder-exclusivity:
 - [folder-rebalance.md](folder-rebalance.md) の手順で、直下のページをクラスタに分類してサブフォルダへ移動
 - どのクラスタにも入らないページは `misc/` サブフォルダに入れる
 - 移動後に `rebuild-index.sh` で全 index.md を再生成、`health-check.sh` で broken link = 0 を確認
+
+## L6: citation-required
+
+### 目的
+
+何らかの情報源から派生したページ（entity / concept / source-url）は、その出典を必ず明記する。出典のない情報は wiki としての信頼性を欠き、再確認もできなくなる。
+
+### 実装
+
+- 対象: 全 `.md`（`index` / `overview` / `log` / `README` 除く）
+- type 別:
+  - `source-url`: frontmatter の `source_url` が空または未設定なら warn
+  - `entity` / `concept`: 本文に `## 出典` / `## Sources` / `## References` / `## 参考` のいずれかの見出しがあり、そのセクション内に `[[...]]` または `http(s)://...` が 1 つ以上あること（HTML コメント `<!-- ... -->` 内は除外）
+  - `source-conversation`: 会話自体が一次ソースのため必須ではない（外部資料を参照する場合は推奨）
+
+### 出力例
+
+```
+L6 citation-required:
+  ⚠️  concepts/React Hooks.md: '## 出典' セクションが見つからない
+  ⚠️  entities/Anthropic.md: '## 出典' セクションにリンク/URL がない
+  ⚠️  sources/urls/article.md: frontmatter の source_url が空
+```
+
+### 対処
+
+- **新規作成時**: テンプレの `## 出典` セクションに元となった `[[source-conversation ページ]]` や URL を必ず記載
+- **既存ページ**: 派生元がはっきり思い出せない場合でも、関連する `[[...]]` を 1 つでも付ける（完全に不明なら `## 出典` に「不明（本人記憶）」と書いて明示）
+- **source-url**: 取得失敗で draft になっている場合でも、`source_url` は frontmatter に必ず記録する
 
 ## 挙動
 

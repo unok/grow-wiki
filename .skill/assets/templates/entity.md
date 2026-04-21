@@ -25,4 +25,8 @@ canonical_name: "{{title}}"
 
 ## 出典
 
-<!-- このページの情報源 [[source-conversation ページ]] [[source-url ページ]] -->
+必ず 1 つ以上、情報源を記載する（lint L6 で warn 検出される）。
+
+- [[元となった source-conversation or source-url ページ]]
+- または外部 URL: https://example.com/...
+- 派生元が不明な場合は「不明（本人記憶）」と明記

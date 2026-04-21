@@ -113,6 +113,15 @@ def strip_code(text: str) -> str:
     return text
 
 
+def strip_comments(text: str) -> str:
+    return re.sub(r'<!--.*?-->', '', text, flags=re.DOTALL)
+
+
+CITATION_HEADINGS = {'出典', 'Sources', 'References', '参考', 'Citations'}
+URL_PATTERN = re.compile(r'https?://\S+')
+WIKILINK_PATTERN = re.compile(r'\[\[[^\]]+\]\]')
+
+
 # 全ファイル収集
 all_md = []
 for p in sorted(vault.rglob('*.md')):
@@ -272,6 +281,51 @@ for d in all_dirs:
         if t != title and t not in aliases:
             add_error('L4', f"{idx.relative_to(vault)}: [[{t}]] "
                             f"does not match title=\"{title}\" or any alias")
+
+
+# === L6: citation-required ===
+for md in all_md:
+    if md.stem in EXCLUDED_STEMS:
+        continue
+    text, fm, _, _ = page_meta[md]
+    page_type = fm.get('type', '') if isinstance(fm.get('type'), str) else ''
+    rel = str(md.relative_to(vault))
+
+    if page_type == 'source-url':
+        src = fm.get('source_url', '') if isinstance(fm.get('source_url'), str) else ''
+        if not src.strip():
+            add_warn('L6', f"{rel}: source-url だが frontmatter の source_url が空")
+        continue
+
+    if page_type not in ('entity', 'concept'):
+        continue
+
+    clean = strip_comments(strip_code(text))
+    section_text = None
+    lines = clean.split('\n')
+    in_section = False
+    buf = []
+    for line in lines:
+        m = re.match(r'^(#+)\s+(.+?)\s*$', line)
+        if m:
+            heading = m.group(2).strip()
+            if heading in CITATION_HEADINGS:
+                in_section = True
+                buf = []
+                continue
+            elif in_section:
+                break
+        if in_section:
+            buf.append(line)
+    if in_section or buf:
+        section_text = '\n'.join(buf)
+
+    if section_text is None:
+        add_warn('L6', f"{rel}: '## 出典' (または Sources/References/参考) セクションがない")
+        continue
+
+    if not (WIKILINK_PATTERN.search(section_text) or URL_PATTERN.search(section_text)):
+        add_warn('L6', f"{rel}: 出典セクションにリンク/URL がない（[[...]] か http(s):// を 1 つ以上記載）")
 
 
 # === 出力 ===
