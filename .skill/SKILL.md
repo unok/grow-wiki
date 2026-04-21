@@ -63,7 +63,7 @@ description: >
 - **自動書き込み禁止**: トリガーが発火しても、ユーザー承認なしにファイルを書き換えない
 - **YAML frontmatter 必須**: 全 `.md` に [frontmatter-spec](references/frontmatter-spec.md) に従った frontmatter を付ける
 - **`[[wikilink]]` 形式のみ**: 相対パス `[text](path.md)` や絶対パスは使わない（再編成でリンク切れを起こすため）
-- **出典の明記（必須）**: entity / concept は `## 出典` セクションに `[[source ページ]]` または外部 URL を 1 つ以上記載。source-url は frontmatter の `source_url` 必須。派生元が不明な場合でも何らかの形で明示（`## 出典` に「不明」と書く等）。lint L6 で warn 検出
+- **出典の明記（必須）**: entity / concept は `## 出典` セクションに `[[source ページ]]` または外部 URL を 1 つ以上記載する。**必ずリンク形式**で（テキストのみの書籍名や「不明」表記は不可）。書籍は Amazon / 出版社公式等の販売サイト URL、記事は公開ページ URL を張る。source-url は frontmatter の `source_url` 必須。lint L6 で warn 検出
 - **index.md は自動生成**: 手動編集しない。更新は `rebuild-index.sh` 経由
 - **log.md は append-only**: 過去エントリを書き換えない
 - **overview.md の全置換は大更新時のみ**: 通常更新では触らない

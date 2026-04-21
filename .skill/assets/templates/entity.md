@@ -25,8 +25,11 @@ canonical_name: "{{title}}"
 
 ## 出典
 
-必ず 1 つ以上、情報源を記載する（lint L6 で warn 検出される）。
+必ず 1 つ以上、**リンク形式**で情報源を記載する（lint L6 で warn 検出）。テキストのみの記載や「不明」表記は不可。
 
-- [[元となった source-conversation or source-url ページ]]
-- または外部 URL: https://example.com/...
-- 派生元が不明な場合は「不明（本人記憶）」と明記
+- 会話: `[[元となった source-conversation ページ]]`
+- URL ソース: `[[元となった source-url ページ]]`
+- 書籍: 販売サイト URL を張る（例: `[書名](https://www.amazon.co.jp/dp/...)`）
+- 外部記事: 公開ページの URL
+
+サブ見出し（`### 書籍` / `### 記事` 等）で整理しても OK。`## 出典` 配下全体が lint のチェック対象。

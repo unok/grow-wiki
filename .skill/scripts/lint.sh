@@ -304,16 +304,21 @@ for md in all_md:
     section_text = None
     lines = clean.split('\n')
     in_section = False
+    citation_level = 0
     buf = []
     for line in lines:
         m = re.match(r'^(#+)\s+(.+?)\s*$', line)
         if m:
+            level = len(m.group(1))
             heading = m.group(2).strip()
             if heading in CITATION_HEADINGS:
                 in_section = True
+                citation_level = level
                 buf = []
                 continue
-            elif in_section:
+            elif in_section and level <= citation_level:
+                # 同レベル以上の見出しで出典セクション終了
+                # より深いサブ見出し（### 書籍 等）は配下として扱う
                 break
         if in_section:
             buf.append(line)
