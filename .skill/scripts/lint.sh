@@ -140,17 +140,21 @@ def add_error(rule: str, msg: str):
 
 
 # === L1: folder-size ===
+# ファイル数とサブフォルダ数の合計（index.md 除く）で判定
 for d in all_dirs:
     pages = [p for p in d.iterdir()
              if p.is_file() and p.suffix == '.md'
              and p.stem not in EXCLUDED_STEMS
              and not p.name.startswith('.')]
-    n = len(pages)
+    subdirs = [p for p in d.iterdir()
+               if p.is_dir() and not p.name.startswith('.')]
+    n = len(pages) + len(subdirs)
     rel = str(d.relative_to(vault)) if d != vault else '.'
+    detail = f"{len(pages)} files + {len(subdirs)} subfolders"
     if n > L1_ERROR:
-        add_error('L1', f"{rel}/: {n} files (error, threshold {L1_ERROR})")
+        add_error('L1', f"{rel}/: {n} items ({detail}, error, threshold {L1_ERROR})")
     elif n > L1_WARN:
-        add_warn('L1', f"{rel}/: {n} files (warn, threshold {L1_WARN})")
+        add_warn('L1', f"{rel}/: {n} items ({detail}, warn, threshold {L1_WARN})")
 
 # === L2: file-length ===
 page_meta = {}  # path -> (text, fm, lines, chars)

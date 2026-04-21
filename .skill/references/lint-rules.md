@@ -6,7 +6,7 @@
 
 | # | 名前 | 内容 | warn 閾値 | error 閾値 |
 |---|---|---|---|---|
-| L1 | folder-size | 各ディレクトリ直下のページ数（index.md 除く） | 20 超 | 40 超 |
+| L1 | folder-size | 各ディレクトリ直下の項目数（.md ファイル + サブフォルダ、index.md 除く） | 20 超 | 40 超 |
 | L2 | file-length | 各ページの行数／文字数 | 300 行 OR 8000 文字超 | 500 行 OR 15000 文字超 |
 | L3 | index-completeness | フォルダ直下の全 .md が同フォルダの index.md 内に `[[wikilink]]` でリストされている | — | 欠落 or 余剰があれば |
 | L4 | index-freshness | index.md の `last_updated` より新しいページが存在する／index.md 内のリンクテキストが現ページ title/aliases と不一致 | 鮮度（古い） | リンク不一致 |
@@ -21,15 +21,16 @@
 ### 実装
 
 - 対象: `WIKI_ROOT` 内の全ディレクトリ（`.skill/` は vault 外なので対象外）
-- `<dir>/*.md` のうち `index.md` を除外してカウント
-- サブディレクトリ配下のファイルはカウントしない（直下のみ）
+- 直下の `.md` ファイル（`index.md` 除く）+ 直下のサブフォルダ数を合計
+- **サブフォルダ配下のファイルは数に含めない**（直下の項目数のみ）
+- 目的: 1 フォルダに並ぶ項目数を抑えて探索性を保つ。サブフォルダに分けても「見える項目数」は減らないので合計で制限する
 
 ### 出力例
 
 ```
 L1 folder-size:
-  ⚠️  sources/conversations: 22 files (warn, threshold 20)
-  ❌ concepts: 43 files (error, threshold 40)
+  ⚠️  sources/conversations/: 22 items (18 files + 4 subfolders, warn, threshold 20)
+  ❌ concepts/: 43 items (5 files + 38 subfolders, error, threshold 40)
 ```
 
 ## L2: file-length
