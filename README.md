@@ -142,6 +142,7 @@ bash ~/.claude/skills/grow-wiki/scripts/list-pages.sh
 | L2 | ファイル長 | 300 行 / 8000 字 | 500 行 / 15000 字 |
 | L3 | index.md 完全性 | — | 欠落 or 余剰あり |
 | L4 | index.md 鮮度・リンク妥当性 | 古い | リンクテキスト不一致 |
+| L5 | subfolder-exclusivity（サブフォルダがあれば直下にページを置かない） | — | 直下にページあり |
 
 閾値の変更は `.skill/references/lint-rules.md` と `.skill/scripts/lint.sh` を同じ値に揃えます。
 

@@ -196,6 +196,24 @@ for d in all_dirs:
         add_error('L3', f"{idx.relative_to(vault)}: extra links -> "
                         + ', '.join(f'[[{e}]]' for e in sorted(extra)))
 
+# === L5: subfolder-exclusivity ===
+for d in all_dirs:
+    subdirs = [p for p in d.iterdir()
+               if p.is_dir() and not p.name.startswith('.')]
+    if not subdirs:
+        continue
+    direct_pages = [p for p in d.iterdir()
+                    if p.is_file() and p.suffix == '.md'
+                    and p.stem not in EXCLUDED_STEMS
+                    and not p.name.startswith('.')]
+    if direct_pages:
+        rel = str(d.relative_to(vault)) if d != vault else '.'
+        stems = [p.stem for p in direct_pages[:5]]
+        more = '...' if len(direct_pages) > 5 else ''
+        add_error('L5',
+                  f"{rel}/: サブフォルダが存在するのに直下に {len(direct_pages)} ページある "
+                  f"({', '.join(stems)}{more}) → サブフォルダに移動するか misc/ へ")
+
 # === L4: index-freshness & link-text validity ===
 # 各 content ページの title / aliases を収集
 content_title_map = {}  # stem -> (title, aliases)

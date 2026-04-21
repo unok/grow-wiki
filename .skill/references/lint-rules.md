@@ -10,6 +10,7 @@
 | L2 | file-length | 各ページの行数／文字数 | 300 行 OR 8000 文字超 | 500 行 OR 15000 文字超 |
 | L3 | index-completeness | フォルダ直下の全 .md が同フォルダの index.md 内に `[[wikilink]]` でリストされている | — | 欠落 or 余剰があれば |
 | L4 | index-freshness | index.md の `last_updated` より新しいページが存在する／index.md 内のリンクテキストが現ページ title/aliases と不一致 | 鮮度（古い） | リンク不一致 |
+| L5 | subfolder-exclusivity | サブフォルダが 1 つでも存在するディレクトリの直下には、index.md（と root の overview/log/README）以外のページを置いてはいけない | — | 直下にページがあれば |
 
 ## L1: folder-size
 
@@ -112,6 +113,34 @@ L4 index-freshness:
 
 - warn: `rebuild-index.sh <folder>` で再生成
 - error: ページ名変更が意図通りか確認した上で再生成
+
+## L5: subfolder-exclusivity
+
+### 目的
+
+サブフォルダを作ったら、そのフォルダ直下にはページを残さず全てをサブフォルダに入れる。親直下とサブフォルダ両方にページがあると、どこを見ればよいか分散して発見性が落ちる。folder-rebalance の結果を強制する lint。
+
+### 実装
+
+- 対象: `WIKI_ROOT` 内の全ディレクトリ
+- そのディレクトリが**サブフォルダを 1 つ以上**持つかを確認
+- サブフォルダがある場合、直下の `.md` から `index.md` / `overview.md` / `log.md` / `README.md` を除いた残りが 0 であること
+- 残っていれば error
+
+### 出力例
+
+```
+L5 subfolder-exclusivity:
+  ❌ concepts/: サブフォルダが存在するのに直下に 3 ページある
+     (React, useMemo, useCallback)
+     → これらを React/ などのサブフォルダへ移動、該当しないものは misc/ へ
+```
+
+### 対処
+
+- [folder-rebalance.md](folder-rebalance.md) の手順で、直下のページをクラスタに分類してサブフォルダへ移動
+- どのクラスタにも入らないページは `misc/` サブフォルダに入れる
+- 移動後に `rebuild-index.sh` で全 index.md を再生成、`health-check.sh` で broken link = 0 を確認
 
 ## 挙動
 
