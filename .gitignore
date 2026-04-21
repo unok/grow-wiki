@@ -1,0 +1,11 @@
+## Claude Code local settings（ユーザー固有の許可リスト）
+.claude/settings.local.json
+
+## macOS
+.DS_Store
+
+## editor
+.vscode/
+.idea/
+*.swp
+*~
