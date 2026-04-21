@@ -6,7 +6,7 @@
 
 | # | 名前 | 内容 | warn 閾値 | error 閾値 |
 |---|---|---|---|---|
-| L1 | folder-size | 各ディレクトリ直下のページ数（index.md 除く） | 50 超 | 80 超 |
+| L1 | folder-size | 各ディレクトリ直下のページ数（index.md 除く） | 20 超 | 40 超 |
 | L2 | file-length | 各ページの行数／文字数 | 300 行 OR 8000 文字超 | 500 行 OR 15000 文字超 |
 | L3 | index-completeness | フォルダ直下の全 .md が同フォルダの index.md 内に `[[wikilink]]` でリストされている | — | 欠落 or 余剰があれば |
 | L4 | index-freshness | index.md の `last_updated` より新しいページが存在する／index.md 内のリンクテキストが現ページ title/aliases と不一致 | 鮮度（古い） | リンク不一致 |
@@ -27,8 +27,8 @@
 
 ```
 L1 folder-size:
-  ⚠️  sources/conversations: 52 files (warn, threshold 50)
-  ❌ concepts: 83 files (error, threshold 80)
+  ⚠️  sources/conversations: 22 files (warn, threshold 20)
+  ❌ concepts: 43 files (error, threshold 40)
 ```
 
 ## L2: file-length

@@ -47,8 +47,8 @@ vault = Path(sys.argv[1]).resolve()
 quiet = sys.argv[2] == '1'
 
 # === 閾値（lint-rules.md と同期） ===
-L1_WARN = 50
-L1_ERROR = 80
+L1_WARN = 20
+L1_ERROR = 40
 L2_WARN_LINES = 300
 L2_WARN_CHARS = 8000
 L2_ERROR_LINES = 500
