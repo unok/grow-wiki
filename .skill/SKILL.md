@@ -54,9 +54,23 @@ description: >
 - 会話 → wiki: [references/conversation-ingest-flow.md](references/conversation-ingest-flow.md)
 - URL → wiki: [references/url-ingest-flow.md](references/url-ingest-flow.md)
 - 既存ページ更新: [references/update-logic.md](references/update-logic.md)
+- **Q&A での参照**: [references/query-flow.md](references/query-flow.md)
 - フォルダ自動分割: [references/folder-rebalance.md](references/folder-rebalance.md)
 - Lint 全ルール: [references/lint-rules.md](references/lint-rules.md)
 - ページテンプレ: [references/page-templates.md](references/page-templates.md)
+
+## 参照ワークフロー（Q&A 時）
+
+ユーザーから質問・相談があり、grow-wiki に関連情報がありそうな場合:
+
+1. [references/triggers.md](references/triggers.md) の**参照トリガー**を評価（明示指示 or キーワード自動提案）
+2. 明示指示なら即起動、自動提案なら「grow-wiki の [[〇〇]] を参照しますか？」と確認
+3. `list-pages.sh` で全ページの frontmatter を取得 → 質問のキーワードと title / aliases / synonyms / tags を突合 → 上位 3〜5 件を特定
+4. 該当ページを Read（ネストはオプションで 1 段）
+5. 回答本文に `[[ページ名]]` で引用、末尾に `📚 参照: [[...]]` で参照元を列挙
+6. 情報の陳腐化・矛盾を検出したら**更新提案**（承認後に ingest の update フローへ）
+
+詳細は [references/query-flow.md](references/query-flow.md)。過剰発火回避のルールもそこに記載。
 
 ## 不変条件（必ず守る）
 
@@ -84,6 +98,8 @@ description: >
 
 | ユーザー発話 | 動作 |
 |---|---|
+| 「grow-wiki に聞いて」「wiki を見て答えて」 | Q&A 用の参照フロー起動 → 関連ページを特定して回答に引用 |
+| 「以前の〇〇の話」「前に書いた〇〇」 | 参照フロー（キーワードから関連ページを探索） |
 | 「grow-wiki の lint」 | `lint.sh` を実行して結果を要約表示 |
 | 「grow-wiki の index を再生成」 | `rebuild-index.sh` 実行 |
 | 「grow-wiki の health check」 | `health-check.sh` で broken link / orphan を報告 |
