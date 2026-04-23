@@ -155,6 +155,16 @@ bash ~/.claude/skills/grow-wiki/scripts/list-pages.sh
 | L6 | citation-required（entity/concept に出典、source-url に source_url） | 出典なし | — |
 | L7 | misc-flat（misc/etc/others 下にサブフォルダを作らない） | — | サブフォルダあり |
 
+### なぜこのチェックを入れるか
+
+- **L1 folder-size** — 1 フォルダに並ぶ項目数が多すぎると目的のページを探しにくくなる。サブフォルダに分けても「見える項目数」は減らないので、**ファイル + サブフォルダの合計**で制限する。閾値を超えたら [folder-rebalance](.skill/references/folder-rebalance.md) でトピック別に分割する
+- **L2 file-length** — wiki 記事は短く保つほうが再利用性が高い。長くなるのは複数トピックが混ざっているか、本来別ページとして切り出すべき節が膨らんだサイン。error レベルに達したら節を entity / concept として分離する
+- **L3 index-completeness** — 各フォルダの `index.md` は「そのフォルダ直下の全ページを網羅する」という約束で自動生成されている。欠落（載ってないページがある）や余剰（削除済みのページへのリンクが残る）は整合性違反で、探索時の迷子・broken link の温床になる
+- **L4 index-freshness** — index.md の `last_updated` より新しいページがある、あるいは index 内のリンクテキストが現在の `title` / `aliases` と食い違うと、新しい情報が vault にあっても発見できない。タイトル変更後の再生成漏れを検出する
+- **L5 subfolder-exclusivity** — サブフォルダがあるフォルダの直下にもページを残すと、同じ階層で「サブフォルダ側も直下も見なければならない」状態になり発見性が半減する。rebalance したら**全部サブフォルダへ移動**（該当なしは misc へ）を強制する
+- **L6 citation-required** — 出典のない情報は wiki として信頼できず、後から裏付けも取れない。会話は `[[source ページ]]`、書籍は販売サイト URL（Amazon / 出版社公式等）、記事は公開ページ URL を張る。リンクがあれば後日 health-check で有効性を機械チェックできる余地も残る
+- **L7 misc-flat** — `misc` / `etc` / `others` は「分類できなかったもの」の雑多置き場。中で階層化すると「雑多の中の雑多」になり、存在価値を失う。肥大化したら **misc 内で再分類するのではなく、親フォルダ側に新カテゴリを作って**該当ページを引き上げる
+
 閾値の変更は `.skill/references/lint-rules.md` と `.skill/scripts/lint.sh` を同じ値に揃えます。
 
 ## 運用の原則
