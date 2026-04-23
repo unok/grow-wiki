@@ -153,6 +153,7 @@ bash ~/.claude/skills/grow-wiki/scripts/list-pages.sh
 | L4 | index.md 鮮度・リンク妥当性 | 古い | リンクテキスト不一致 |
 | L5 | subfolder-exclusivity（サブフォルダがあれば直下にページを置かない） | — | 直下にページあり |
 | L6 | citation-required（entity/concept に出典、source-url に source_url） | 出典なし | — |
+| L7 | misc-flat（misc/etc/others 下にサブフォルダを作らない） | — | サブフォルダあり |
 
 閾値の変更は `.skill/references/lint-rules.md` と `.skill/scripts/lint.sh` を同じ値に揃えます。
 

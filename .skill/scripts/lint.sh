@@ -209,6 +209,26 @@ for d in all_dirs:
         add_error('L3', f"{idx.relative_to(vault)}: extra links -> "
                         + ', '.join(f'[[{e}]]' for e in sorted(extra)))
 
+# === L7: misc-flat ===
+# misc / etc / others フォルダの直下にサブフォルダを作ってはいけない（フラット維持）
+MISC_DIR_NAMES = {'misc', 'etc', 'others'}
+for d in all_dirs:
+    if d == vault:
+        continue
+    if d.name.lower() not in MISC_DIR_NAMES:
+        continue
+    subdirs = [p for p in d.iterdir()
+               if p.is_dir() and not p.name.startswith('.')]
+    if subdirs:
+        rel = str(d.relative_to(vault))
+        names = ', '.join(s.name for s in subdirs[:5])
+        more = '...' if len(subdirs) > 5 else ''
+        add_error('L7',
+                  f"{rel}/: {d.name}/etc/others 下にサブフォルダを作らない "
+                  f"({len(subdirs)} subfolders: {names}{more}) "
+                  f"→ 親フォルダに新しいフォルダを作って分類")
+
+
 # === L5: subfolder-exclusivity ===
 for d in all_dirs:
     subdirs = [p for p in d.iterdir()

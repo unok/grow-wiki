@@ -12,6 +12,7 @@
 | L4 | index-freshness | index.md の `last_updated` より新しいページが存在する／index.md 内のリンクテキストが現ページ title/aliases と不一致 | 鮮度（古い） | リンク不一致 |
 | L5 | subfolder-exclusivity | サブフォルダが 1 つでも存在するディレクトリの直下には、index.md（と root の overview/log/README）以外のページを置いてはいけない | — | 直下にページあり |
 | L6 | citation-required | entity / concept は `## 出典` セクションに `[[source ページ]]` または外部 URL を 1 つ以上記載。source-url は frontmatter の `source_url` が必須 | 出典なし | — |
+| L7 | misc-flat | `misc` / `etc` / `others` フォルダの直下にサブフォルダを作ってはいけない（階層化せず、親フォルダに新しいカテゴリを作る） | — | サブフォルダあり |
 
 ## L1: folder-size
 
@@ -191,6 +192,32 @@ L6 citation-required:
 - **外部記事**: 公開ページの URL を記載
 - **既存ページで派生元が不明**: 関連書籍の販売サイト URL や信頼できる解説記事の URL を少なくとも 1 つ添える（「不明」のテキスト記載だけでは不可）
 - **source-url**: 取得失敗で draft になっている場合でも、`source_url` は frontmatter に必ず記録する
+
+## L7: misc-flat
+
+### 目的
+
+`misc` / `etc` / `others` のような雑多置き場の中で階層構造を作ると「どこを見てもよく分からない」状態になり、発見性が著しく低下する。雑多置き場は**フラットのまま**保ち、肥大化してきたら**親フォルダ側に新しいカテゴリフォルダを作って**該当ページを移動する。
+
+### 実装
+
+- 対象: ディレクトリ名（大文字小文字を問わない）が `misc` / `etc` / `others` のいずれか
+- その直下にサブフォルダが 1 つでもあれば error
+
+### 出力例
+
+```
+L7 misc-flat:
+  ❌ concepts/misc/: misc/etc/others 下にサブフォルダを作らない (3 subfolders: old, legacy, backup)
+     → 親フォルダに新しいフォルダを作って分類
+```
+
+### 対処
+
+1. misc/ 配下のページで**共通テーマ**が見つかれば、**親フォルダ**に新しいカテゴリフォルダを作る
+2. そのフォルダに該当ページを移動
+3. 単発のページは misc/ 直下に**フラットのまま**残す
+4. どうしても misc 内を整理したい場合は、misc/ 自体を廃止して親フォルダに新フォルダ群で置き換える（「misc 内サブフォルダ」にしない）
 
 ## 挙動
 
