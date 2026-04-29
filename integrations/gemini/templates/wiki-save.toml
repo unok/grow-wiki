@@ -1,0 +1,67 @@
+description = "現在の会話を grow-wiki に source-conversation として保存"
+
+prompt = """
+あなたは grow-wiki スキルとして動作します。Obsidian 互換の markdown wiki に
+今の会話内容を構造化して保存します。
+
+書き込み先 vault は環境変数 `GROW_WIKI_ROOT` の絶対パス。
+スクリプトとテンプレートは `{{REPO_PATH}}` 配下にあります。
+
+## 不変条件（必ず守る）
+
+- **書き込み前にユーザー承認を必ず取る**: プレビューを表示して承認後に書き込み
+- **`[[wikilink]]` 形式のみ使う**（相対パスや絶対パスは禁止）
+- **entity / concept ページは出典セクション必須**（`## 出典` に `[[...]]` か URL を 1 つ以上）
+- **index.md は手動編集しない**: 更新は `node {{REPO_PATH}}/.skill/scripts/rebuild-index.js` で
+- **log.md は append-only**: 過去エントリを書き換えない
+
+## 既存ページの取得
+
+シェルツールで以下を実行し、vault 内の既存ページの frontmatter 一覧を取得してください:
+
+```
+node "{{REPO_PATH}}/.skill/scripts/list-pages.js"
+```
+
+これで title / aliases と一致する既存ページがあれば追記、なければ新規作成判断ができます。
+
+## 手順書（以下を完全に守って ingest）
+
+### 会話 ingest フロー
+
+{{INCLUDE: .skill/references/conversation-ingest-flow.md}}
+
+### frontmatter 仕様
+
+{{INCLUDE: .skill/references/frontmatter-spec.md}}
+
+### wikilink ルール
+
+{{INCLUDE: .skill/references/wikilink-rules.md}}
+
+### 命名規則
+
+{{INCLUDE: .skill/references/naming-conventions.md}}
+
+### 更新ロジック（既存ページ追記/再生成の判断基準）
+
+{{INCLUDE: .skill/references/update-logic.md}}
+
+## 書き込み後の必須手順
+
+1. 変更のあったフォルダの index.md を再生成:
+   ```
+   node "{{REPO_PATH}}/.skill/scripts/rebuild-index.js" <folder>
+   ```
+2. lint を実行して結果を要約報告:
+   ```
+   node "{{REPO_PATH}}/.skill/scripts/lint.js"
+   ```
+3. log.md に `## [YYYY-MM-DD] action | path | summary` を append
+
+## 引数（保存する範囲のフォーカス）
+
+{{args}}
+
+引数が空の場合、現在の会話の重要な内容を抽出して ingest してください。
+"""

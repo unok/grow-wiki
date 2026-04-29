@@ -135,5 +135,5 @@ synonyms: ["フック"]
 
 ## lint での扱い
 
-- frontmatter 欠落 → L3（index.md 完全性）の前に `health-check.sh` で検出され error
-- 必須フィールド欠落 → `list-pages.sh` 段階で検出し、スキル側が error 通知
+- frontmatter 欠落 → L3（index.md 完全性）の前に `health-check.js` で検出され error
+- 必須フィールド欠落 → `list-pages.js` 段階で検出し、スキル側が error 通知

@@ -9,7 +9,7 @@
 - `{{session_id}}` — 会話セッション識別子
 - `{{entity_kind}}` — `person` / `tool` / `product` / `org`
 - `{{folder_title}}` — folder-index.md 用のフォルダ名
-- `{{page_list}}` / `{{subfolder_list}}` / `{{sources_conversations_list}}` 等 — rebuild-index.sh が埋める
+- `{{page_list}}` / `{{subfolder_list}}` / `{{sources_conversations_list}}` 等 — rebuild-index.js が埋める
 
 ## 使用箇所
 
@@ -19,10 +19,10 @@
 | `source-url.md` | URL ソース新規作成 | url-ingest-flow |
 | `entity.md` | エンティティ新規作成 | ingest 時の entity 抽出フェーズ |
 | `concept.md` | 概念新規作成 | ingest 時の concept 抽出フェーズ |
-| `folder-index.md` | 各フォルダの index.md | rebuild-index.sh |
-| `root-index.md` | vault ルート index.md | rebuild-index.sh |
-| `overview.md` | vault ルート overview.md | init-vault.sh（以降は大更新時のみ手動） |
-| `log.md` | 更新履歴の初期化 | init-vault.sh |
+| `folder-index.md` | 各フォルダの index.md | rebuild-index.js |
+| `root-index.md` | vault ルート index.md | rebuild-index.js |
+| `overview.md` | vault ルート overview.md | init-vault.js（以降は大更新時のみ手動） |
+| `log.md` | 更新履歴の初期化 | init-vault.js |
 
 ## テンプレート本文の原則
 

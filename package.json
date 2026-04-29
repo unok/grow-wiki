@@ -1,0 +1,19 @@
+{
+  "name": "grow-wiki",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Obsidian-compatible markdown wiki skill for Claude Code / Gemini CLI / Codex CLI",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.24.0",
+    "js-yaml": "^4.1.0",
+    "typescript": "^5.6.0"
+  }
+}

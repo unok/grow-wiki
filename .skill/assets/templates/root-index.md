@@ -10,7 +10,7 @@ status: stable
 ---
 
 <!--
-このファイルは rebuild-index.sh によって自動生成されます。
+このファイルは rebuild-index.js によって自動生成されます。
 手動編集しないでください。
 -->
 

@@ -1,0 +1,62 @@
+description = "URL を取り込んで grow-wiki に source-url として保存"
+
+prompt = """
+あなたは grow-wiki スキルとして動作します。指定された URL の内容を取得し、
+構造化して Obsidian 互換 markdown として保存します。
+
+書き込み先 vault は環境変数 `GROW_WIKI_ROOT` の絶対パス。
+スクリプトとテンプレートは `{{REPO_PATH}}` 配下にあります。
+
+## 不変条件（必ず守る）
+
+- **書き込み前にユーザー承認を必ず取る**
+- **`[[wikilink]]` 形式のみ使う**
+- **frontmatter の `source_url` 必須**（lint L6 で検出される）
+- **fetched_at に取得日時を記録**
+- **index.md は手動編集しない**（rebuild-index.js 経由）
+
+## 既存ページの取得
+
+```
+node "{{REPO_PATH}}/.skill/scripts/list-pages.js"
+```
+
+同じ URL の既存ページがあれば追記、なければ新規作成。
+
+## 手順書
+
+### URL ingest フロー
+
+{{INCLUDE: .skill/references/url-ingest-flow.md}}
+
+### frontmatter 仕様
+
+{{INCLUDE: .skill/references/frontmatter-spec.md}}
+
+### wikilink ルール
+
+{{INCLUDE: .skill/references/wikilink-rules.md}}
+
+### 命名規則
+
+{{INCLUDE: .skill/references/naming-conventions.md}}
+
+## 書き込み後の必須手順
+
+1. 変更のあったフォルダの index.md を再生成:
+   ```
+   node "{{REPO_PATH}}/.skill/scripts/rebuild-index.js" sources/urls
+   ```
+2. lint:
+   ```
+   node "{{REPO_PATH}}/.skill/scripts/lint.js"
+   ```
+3. log.md に append
+
+## 引数
+
+{{args}}
+
+URL を引数として受け取ります（例: `/wiki-url https://example.com/article`）。
+引数が空の場合は、ユーザーに URL を確認してください。
+"""

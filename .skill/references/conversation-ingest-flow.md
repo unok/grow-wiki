@@ -11,7 +11,7 @@
 ### 2. 既存ページの取得
 
 ```bash
-.skill/scripts/list-pages.sh
+node .skill/scripts/list-pages.js
 ```
 
 を実行して vault 内の全ページを JSON で取得。以降の wikilink 解決・衝突検出に使う。
@@ -72,10 +72,10 @@ tags: [...]
 ### 8. 書き込み・索引更新・ログ・lint
 
 1. ファイル書き込み（Write ツール）
-2. 変更のあったフォルダの `index.md` を `rebuild-index.sh <folder>` で再生成
+2. 変更のあったフォルダの `index.md` を `rebuild-index.js <folder>` で再生成
 3. ルート `index.md` も再生成（フォルダ構成に変更があった場合）
 4. `log.md` に各変更を追記
-5. `lint.sh` を実行、結果を要約してユーザーに報告
+5. `lint.js` を実行、結果を要約してユーザーに報告
 
 ## ファイル名の決定
 

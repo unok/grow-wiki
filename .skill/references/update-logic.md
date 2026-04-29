@@ -68,7 +68,7 @@
 
 ## 既存ページが見つからない場合
 
-`list-pages.sh` の結果にマッチするページがなければ新規作成フロー。命名規則は [naming-conventions.md](naming-conventions.md)。
+`list-pages.js` の結果にマッチするページがなければ新規作成フロー。命名規則は [naming-conventions.md](naming-conventions.md)。
 
 ## 競合・マージ
 

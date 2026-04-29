@@ -9,3 +9,7 @@
 .idea/
 *.swp
 *~
+
+## node
+node_modules/
+*.tsbuildinfo

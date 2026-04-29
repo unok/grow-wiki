@@ -1,0 +1,33 @@
+description = "grow-wiki vault の整合性チェック（L1-L7 lint を実行）"
+
+prompt = """
+grow-wiki vault の lint を実行し、結果を要約してください。
+
+## 実行
+
+シェルツールで以下を実行:
+
+```
+node "{{REPO_PATH}}/.skill/scripts/lint.js"
+```
+
+## 終了コードの解釈
+
+- 0: 問題なし
+- 1: warning あり（書き込みは可能、ただし要対応）
+- 2: error あり（書き込みブロック相当）
+
+## 結果報告
+
+- warn / error の件数とルール内訳を簡潔に箇条書き
+- error がある場合は対処手順（該当する rebuild-index 等）を提示
+- 何もなければ "✅ no issues" のみ報告
+
+## ルール一覧の参照
+
+詳細なルール定義が必要な時は、以下のファイルを Read で読む:
+
+```
+{{REPO_PATH}}/.skill/references/lint-rules.md
+```
+"""

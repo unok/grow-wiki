@@ -4,7 +4,7 @@
 
 ## 発火条件
 
-- L1 lint (`lint.sh`) が warn（20 超）または error（40 超）を返したフォルダ
+- L1 lint (`lint.js`) が warn（20 超）または error（40 超）を返したフォルダ
 - ユーザーから「フォルダを整理して」「rebalance して」と明示指示があった時
 
 ## 手続き
@@ -12,7 +12,7 @@
 ### 1. 現状分析
 
 ```
-.skill/scripts/list-pages.sh <target-folder>
+node .skill/scripts/list-pages.js <target-folder>
 ```
 
 対象フォルダ配下の全ページの frontmatter を取得。各ページの tags を集計する。
@@ -104,17 +104,17 @@ concepts/                concepts/
 
 承認後:
 
-1. 事前 snapshot: 移動前に `health-check.sh` を実行して broken link = 0 を確認
+1. 事前 snapshot: 移動前に `node .skill/scripts/health-check.js` を実行して broken link = 0 を確認
 2. `mkdir -p <new-subfolder>` で各サブフォルダを作成
 3. ファイルを `mv` で移動（一括ではなく 1 ファイルずつ log に記録可能な形で）
-4. サブフォルダの `index.md` を生成: `.skill/scripts/rebuild-index.sh <subfolder>`
-5. 元フォルダの `index.md` を再生成: `.skill/scripts/rebuild-index.sh <parent>`
-6. ルート `index.md` を再生成: `.skill/scripts/rebuild-index.sh`
+4. サブフォルダの `index.md` を生成: `node .skill/scripts/rebuild-index.js <subfolder>`
+5. 元フォルダの `index.md` を再生成: `node .skill/scripts/rebuild-index.js <parent>`
+6. ルート `index.md` を再生成: `node .skill/scripts/rebuild-index.js`
 
 ### 6. 事後検証
 
-1. `health-check.sh` を再実行 → broken link = 0 を確認
-2. `lint.sh` を実行 → L1 warn/error が解消していることを確認
+1. `node .skill/scripts/health-check.js` を再実行 → broken link = 0 を確認
+2. `node .skill/scripts/lint.js` を実行 → L1 warn/error が解消していることを確認
 3. `log.md` に以下の 1 行を append:
 
 ```

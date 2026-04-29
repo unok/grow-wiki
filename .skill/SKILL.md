@@ -41,13 +41,13 @@ description: >
 ## 基本ワークフロー
 
 1. **トリガー検知** — [references/triggers.md](references/triggers.md) のルールで起動。キーワード自動提案時は「grow-wiki に保存しましょうか？」と確認
-2. **既存ページ取得** — `.skill/scripts/list-pages.sh` で vault 内の全ページの frontmatter を JSON で読み込む
+2. **既存ページ取得** — `node .skill/scripts/list-pages.js` で vault 内の全ページの frontmatter を JSON で読み込む
 3. **分類と下書き** — type 判定、タイトル生成、本文構造化、`[[wikilink]]` 付与。[references/wikilink-rules.md](references/wikilink-rules.md) と [references/naming-conventions.md](references/naming-conventions.md) に従う
 4. **プレビューと承認** — 新規/更新ファイルの差分をユーザーに提示して承認を取得
 5. **書き込み** — 承認後にファイルを作成/更新
-6. **索引更新** — 変更があったフォルダの `index.md` を `.skill/scripts/rebuild-index.sh` で再生成
+6. **索引更新** — 変更があったフォルダの `index.md` を `node .skill/scripts/rebuild-index.js` で再生成
 7. **ログ追記** — `log.md` に `## [YYYY-MM-DD] action | path | summary` を append
-8. **Lint 実行** — `.skill/scripts/lint.sh` を実行。error があればユーザーに報告し修正を提案。warn は `log.md` に記録
+8. **Lint 実行** — `node .skill/scripts/lint.js` を実行。error があればユーザーに報告し修正を提案。warn は `log.md` に記録
 
 ## フロー別の詳細
 
@@ -65,7 +65,7 @@ description: >
 
 1. [references/triggers.md](references/triggers.md) の**参照トリガー**を評価（明示指示 or キーワード自動提案）
 2. 明示指示なら即起動、自動提案なら「grow-wiki の [[〇〇]] を参照しますか？」と確認
-3. `list-pages.sh` で全ページの frontmatter を取得 → 質問のキーワードと title / aliases / synonyms / tags を突合 → 上位 3〜5 件を特定
+3. `node .skill/scripts/list-pages.js` で全ページの frontmatter を取得 → 質問のキーワードと title / aliases / synonyms / tags を突合 → 上位 3〜5 件を特定
 4. 該当ページを Read（ネストはオプションで 1 段）
 5. 回答本文に `[[ページ名]]` で引用、末尾に `📚 参照: [[...]]` で参照元を列挙
 6. 情報の陳腐化・矛盾を検出したら**更新提案**（承認後に ingest の update フローへ）
@@ -78,14 +78,14 @@ description: >
 - **YAML frontmatter 必須**: 全 `.md` に [frontmatter-spec](references/frontmatter-spec.md) に従った frontmatter を付ける
 - **`[[wikilink]]` 形式のみ**: 相対パス `[text](path.md)` や絶対パスは使わない（再編成でリンク切れを起こすため）
 - **出典の明記（必須）**: entity / concept は `## 出典` セクションに `[[source ページ]]` または外部 URL を 1 つ以上記載する。**必ずリンク形式**で（テキストのみの書籍名や「不明」表記は不可）。書籍は Amazon / 出版社公式等の販売サイト URL、記事は公開ページ URL を張る。source-url は frontmatter の `source_url` 必須。lint L6 で warn 検出
-- **index.md は自動生成**: 手動編集しない。更新は `rebuild-index.sh` 経由
+- **index.md は自動生成**: 手動編集しない。更新は `node .skill/scripts/rebuild-index.js` 経由
 - **log.md は append-only**: 過去エントリを書き換えない
 - **overview.md の全置換は大更新時のみ**: 通常更新では触らない
 
 ## 初回起動時
 
 1. 環境変数 `GROW_WIKI_ROOT` が設定されているか確認する（未設定ならスクリプトがエラーメッセージを出して停止する）
-2. vault が未初期化なら `bash .skill/assets/init-vault.sh` を実行（既存ファイルは上書きしない、冪等）
+2. vault が未初期化なら `node .skill/scripts/init-vault.js` を実行（既存ファイルは上書きしない、冪等）
 
 ## Obsidian での運用
 
@@ -100,10 +100,10 @@ description: >
 |---|---|
 | 「grow-wiki に聞いて」「wiki を見て答えて」 | Q&A 用の参照フロー起動 → 関連ページを特定して回答に引用 |
 | 「以前の〇〇の話」「前に書いた〇〇」 | 参照フロー（キーワードから関連ページを探索） |
-| 「grow-wiki の lint」 | `lint.sh` を実行して結果を要約表示 |
-| 「grow-wiki の index を再生成」 | `rebuild-index.sh` 実行 |
-| 「grow-wiki の health check」 | `health-check.sh` で broken link / orphan を報告 |
-| 「grow-wiki を初期化」 | `init-vault.sh` 実行（冪等） |
+| 「grow-wiki の lint」 | `node .skill/scripts/lint.js` を実行して結果を要約表示 |
+| 「grow-wiki の index を再生成」 | `node .skill/scripts/rebuild-index.js` 実行 |
+| 「grow-wiki の health check」 | `node .skill/scripts/health-check.js` で broken link / orphan を報告 |
+| 「grow-wiki を初期化」 | `node .skill/scripts/init-vault.js` 実行（冪等） |
 | 「grow-wiki の〇〇ページを更新」 | 該当ページを読み込み → 追記/再生成判断 → プレビュー → 承認 → 書き込み |
 
 ## 終了時サマリのフォーマット

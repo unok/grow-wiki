@@ -7,7 +7,7 @@ grow-wiki に蓄積した情報を Q&A に活用するフロー。[triggers.md](
 ### 1. 既存ページの取得
 
 ```bash
-bash .skill/scripts/list-pages.sh
+node .skill/scripts/list-pages.js
 ```
 
 全ページの frontmatter（title / aliases / synonyms / tags / path / last_updated）を JSON で取得。

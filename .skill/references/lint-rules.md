@@ -1,6 +1,6 @@
 # lint ルール
 
-`lint.sh` が実行する 4 つの整合性チェック。各ルールの閾値は**このドキュメントが単一ソース**。`lint.sh` のコメントにも同じ値が書かれているので、変更する場合は両方を揃える。
+`lint.js` が実行する 4 つの整合性チェック。各ルールの閾値は**このドキュメントが単一ソース**。`lint.js` のコメントにも同じ値が書かれているので、変更する場合は両方を揃える。
 
 ## ルール一覧
 
@@ -83,7 +83,7 @@ L3 index-completeness:
 
 ### 対処
 
-欠落・余剰ともに `rebuild-index.sh <folder>` で再生成する。ユーザー承認後に実行。
+欠落・余剰ともに `rebuild-index.js <folder>` で再生成する。ユーザー承認後に実行。
 
 ## L4: index-freshness
 
@@ -114,7 +114,7 @@ L4 index-freshness:
 
 ### 対処
 
-- warn: `rebuild-index.sh <folder>` で再生成
+- warn: `rebuild-index.js <folder>` で再生成
 - error: ページ名変更が意図通りか確認した上で再生成
 
 ## L5: subfolder-exclusivity
@@ -143,7 +143,7 @@ L5 subfolder-exclusivity:
 
 - [folder-rebalance.md](folder-rebalance.md) の手順で、直下のページをクラスタに分類してサブフォルダへ移動
 - どのクラスタにも入らないページは `misc/` サブフォルダに入れる
-- 移動後に `rebuild-index.sh` で全 index.md を再生成、`health-check.sh` で broken link = 0 を確認
+- 移動後に `rebuild-index.js` で全 index.md を再生成、`health-check.js` で broken link = 0 を確認
 
 ## L6: citation-required
 
@@ -237,7 +237,7 @@ L7 misc-flat:
 
 ### error 時のスキル挙動
 
-- ingest 直後の lint で error が出た場合、ユーザーに通知し、`rebuild-index.sh` 実行を提案（承認後に実行）
+- ingest 直後の lint で error が出た場合、ユーザーに通知し、`rebuild-index.js` 実行を提案（承認後に実行）
 - L1 error は `folder-rebalance` を提案
 - L2 error はページ分割を提案
 
@@ -248,4 +248,4 @@ L7 misc-flat:
 
 ## 閾値の変更
 
-この lint-rules.md と `scripts/lint.sh` 内の定数の**両方を同じ値に**変更する。
+この lint-rules.md と `scripts/lint.js` 内の定数の**両方を同じ値に**変更する。

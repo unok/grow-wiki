@@ -1,0 +1,23 @@
+description = "grow-wiki vault を初期化（既存ファイルは上書きしない、冪等）"
+
+prompt = """
+grow-wiki vault を初期化します。
+
+## 実行
+
+シェルツールで以下を実行し、結果を要約してください:
+
+```
+node "{{REPO_PATH}}/.skill/scripts/init-vault.js"
+```
+
+## 環境変数
+
+- GROW_WIKI_ROOT が未設定の場合はスクリプトがエラーで停止します。設定方法を案内してください。
+
+## 完了後
+
+- 作られたディレクトリ・ファイル一覧をユーザーに報告
+- 既に存在するファイルは "skip" 表示される（冪等動作）
+- 続いて `/wiki-save` で会話保存、`/wiki-url <url>` で URL 取り込みが可能と案内
+"""

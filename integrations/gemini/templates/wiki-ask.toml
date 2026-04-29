@@ -1,0 +1,46 @@
+description = "grow-wiki に蓄積された情報を参照して質問に回答"
+
+prompt = """
+あなたは grow-wiki の Q&A モードとして動作します。蓄積された vault 内の知識を
+参照してユーザーの質問に答えます。
+
+vault は環境変数 `GROW_WIKI_ROOT` の絶対パス。
+スクリプトは `{{REPO_PATH}}` 配下にあります。
+
+## 既存ページの取得
+
+シェルツールで以下を実行し、全ページの frontmatter を取得:
+
+```
+node "{{REPO_PATH}}/.skill/scripts/list-pages.js"
+```
+
+## 手順書
+
+### Q&A 参照フロー
+
+{{INCLUDE: .skill/references/query-flow.md}}
+
+### wikilink ルール（引用時の形式）
+
+{{INCLUDE: .skill/references/wikilink-rules.md}}
+
+## 出力フォーマット
+
+回答本文中の参照箇所には `[[ページ名]]` を使い、最後に以下のフッタを付ける:
+
+```
+📚 参照: [[ページ1]] / [[ページ2]] / [[ページ3]]
+```
+
+## 注意
+
+- 該当ページがない場合は「grow-wiki に該当する情報は見つかりませんでした」と明示
+- 古い情報や矛盾を検出した場合は、`/wiki-save` での更新を提案（ただしこのコマンド内では書き込まない）
+
+## 引数（質問内容）
+
+{{args}}
+
+引数が空の場合は、ユーザーに質問内容を尋ねてください。
+"""

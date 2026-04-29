@@ -10,8 +10,8 @@ status: stable
 ---
 
 <!--
-このファイルは rebuild-index.sh によって自動生成されます。
-手動編集しないでください。内容を更新したい場合は `.skill/scripts/rebuild-index.sh` を実行してください。
+このファイルは rebuild-index.js によって自動生成されます。
+手動編集しないでください。内容を更新したい場合は `node .skill/scripts/rebuild-index.js` を実行してください。
 -->
 
 # {{folder_title}}
