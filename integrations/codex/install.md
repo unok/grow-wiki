@@ -1,5 +1,7 @@
 # Codex CLI 連携セットアップ
 
+[English](install.en.md) | **日本語**
+
 `grow-wiki` を Codex CLI から使うための手順です。
 
 ## 仕組み

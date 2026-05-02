@@ -1,5 +1,7 @@
 # grow-wiki
 
+[English](README.en.md) | **日本語**
+
 会話内容・URL・メモを Obsidian 互換 markdown wiki として継続的に蓄積するためのスキル。**Claude Code / Gemini CLI / Codex CLI** から利用可能。
 
 [SamurAIGPT/llm-wiki-agent](https://github.com/SamurAIGPT/llm-wiki-agent) の設計思想を参考に、Obsidian vault 内のサブフォルダへ書き込みます。会話から抽出した情報を sources / entities / concepts の 3 層構造で整理し、`[[wikilink]]` による相互参照、7 種の整合性 lint、フォルダ自動分割まで含めてサポートします。
@@ -313,7 +315,8 @@ grow-wiki/                      ← このリポジトリ（clone 先）
 ├── tsconfig.json
 ├── scripts/
 │   └── build.mjs               ← esbuild ビルドスクリプト（pnpm build）
-├── README.md
+├── README.md                   ← 日本語（主）
+├── README.en.md                ← English
 └── LICENSE
 
 <GROW_WIKI_ROOT>/               ← wiki コンテンツの書き込み先（別 Obsidian vault 内）

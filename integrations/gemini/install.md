@@ -1,5 +1,7 @@
 # Gemini CLI 連携セットアップ
 
+[English](install.en.md) | **日本語**
+
 `grow-wiki` を Gemini CLI から使うための手順です。Windows / macOS / Linux いずれでも動きます。
 
 ## 前提
